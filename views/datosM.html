@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+    <style>
+        body {
+            background-color: black;
+            padding: 3.2vh;
+            overflow: hidden;
+        }
+
+        p {
+            padding-left: 2.8vh;
+            color: white;
+        }
+
+        .mirror {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .mirror-content {
+            position: absolute;
+            inset: 0;
+            width: 25vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2vw;
+        }
+
+        .mirror-clock {
+            border: 1px solid rgb(0, 0, 0);
+            height: 25%;
+        }
+
+        .mirror-data {
+            border: 1px solid rgb(0, 0, 0);
+            height: 100%;
+        }
+
+        .mirror-clima {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 25vw;
+            height: 300px;
+            border: 1px solid rgb(0, 0, 0);
+            justify-content: center;
+        }
+
+        #hidratacion {
+            color: azure
+        }
+    </style>
+
+    <body>
+        <div class="mirror">
+            <div class="mirror-content">
+                <div class="mirror-clock">
+
+                </div>
+                <div class="mirror-data">
+                    <p>Hidratacion: <span id="hidratacion"></span></p>
+                    <p>Peso: <span id="peso"></span></p>
+                    <p>Edad: <span id="edad"></span></p>
+                    <p>Sueño: <span id="sueno"></span></p>
+                </div>
+            </div>
+            <div class="mirror-clima">
+
+
+            </div>
+        </div>
+
+        <script>
+            let intervalId = null
+            let userLogged = 0
+
+            function startInterval() {
+                intervalId = setInterval(() => {
+                    getMirrorData("ABCD1234")
+                    console.log(userLogged)
+                    userLogged === 0 ? false : getUserDataAsync(userLogged)
+                }, 10)
+            }
+
+            function stopInterval() {
+                if (intervalId) {
+                    clearInterval(intervalId)
+                    intervalId = null
+                }
+            }
+
+            startInterval()
+
+            setTimeout(stopInterval, 10000)
+
+            function getMirrorData(code) {
+                fetch("http://www.espejointeligente.somee.com/api/users/mirror/" + code, {
+                    method: "GET",
+                    headers: {
+                        "ContentType": "application/json"
+                    }
+                }).then(res => res.json()).then((data) => {
+                    console.log(data)
+                    userLogged = data[0].Id_user
+                })
+            }
+
+            async function getUserDataAsync(code) {
+                await getUserData(code)
+            }
+
+            function getUserData(code) {
+                return new Promise((resolve, reject) => {
+                    fetch("http://www.espejointeligente.somee.com/api/users/salud?id_user=" + code, {
+                        method: "GET",
+                        headers: {
+                            "ContentType": "application/json"
+                        }
+                    }).then(res => res.json()).then((data) => {
+                        console.log(data)
+                        const $hidratacionElement = document.getElementById("hidratacion")
+                        const $pesoElement = document.getElementById("peso")
+                        const $edadElement = document.getElementById("edad")
+                        const $suenoElement = document.getElementById("sueno")
+
+                        $hidratacionElement.innerText = ""
+                        $pesoElement.innerText = ""
+                        $edadElement.innerText = ""
+                        $suenoElement.innerText = ""
+
+
+                        $hidratacionElement.innerText += data[0].Hidratacion.Agua
+                        $pesoElement.innerText += data[0].PesoC.Peso
+                        $edadElement.innerText += data[0].PesoC.Edad
+                        $suenoElement.innerText += data[0].Sueno.Horas
+
+                        return resolve(true)
+                    }).catch((err) => {
+                        return reject(err)
+                    })
+                })
+            }
+            setInterval(function () {
+                location.reload();
+            }, 5000); // 40000 milisegundos = 40 segundos
+
+        </script>
+    </body>
+</body>
+
+</html>

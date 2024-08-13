@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <body>
+        <style>
+            .body{
+                background-color: black;
+                padding: 3.2vh;
+            }
+            .mapa{
+                width: 25vw;
+                height: 100px;
+                position: absolute;
+                top: 0px;
+                right: 0px;
+            }
+            #map{
+                height: 300px;
+                width: 100%;
+            }
+            @media (min-width: 250.400px) {
+                .body{
+                background-color: black;
+                padding: 3.2vh;
+            }
+            .mapa{
+                width: 100vw;
+                height: 100px;
+            }
+            #map{
+                height: 100vw;
+                width: 100%;
+            }
+            }
+        </style>
+        
+        <div class="mapa">
+            <div id="map">
+        
+                <script>
+                    var map;
+        
+                    function initMap() {
+                        map = new google.maps.Map(document.getElementById('map'), {
+                            center: { lat: 26.051036399508135, lng: -98.26033271005365 },
+                            zoom: 13
+                        });
+        
+                        // Activate traffic layer by default
+                        var trafficLayer = new google.maps.TrafficLayer();
+                        trafficLayer.setMap(map);
+        
+                        // Other layers remain unmapped initially
+                        var transitLayer = new google.maps.TransitLayer();
+                        var bikeLayer = new google.maps.BicyclingLayer();
+                    }
+                </script>
+            </div>
+        </div>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAd_ZJblJvsvt07degKK_TsTwlB2vzSRgI&callback=initMap"
+            async defer></script>
+    
+        <script>
+            function requestLocationPermission() {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    console.log('Location:', position);
+                }, function (error) {
+                    console.error('Error obtaining location:', error);
+                    if (error.code === error.PERMISSION_DENIED) {
+                        console.error('User denied permission to access location');
+                    }
+                }, {
+                    enableHighAccuracy: true, // Optional: Set to true for high accuracy
+                    timeout: 10000, // Optional: Set timeout in milliseconds
+                    maximumAge: 60000 // Optional: Set maximum cached age in milliseconds
+                });
+            }
+        </script>
+    
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    </body>
+    
+</body>
+
+</html>
