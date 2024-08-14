@@ -2,18 +2,28 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="/Monitor/www/js/bootstrap-icons/font/bootstrap-icons.css">
+
+
 </head>
 
 <body>
     <style>
+        :root{
+            --ff-nunito-sans: "Nunito Sans", sans-serif;
+        }
+        html{
+            font-family: var(--ff-nunito-sans);
+        }
         body {
-            background-color: black;
+            background-color: #1d1c1f;
             padding: 3.2vh;
             overflow: hidden;
         }
 
         p {
-            padding-left: 2.8vh;
+            margin-top: 30px;
+            padding-left: 3.8vh;
             color: white;
         }
 
@@ -21,59 +31,47 @@
             width: 100vw;
             height: 100vh;
             position: relative;
+            background-color: #1d1c1f;
         }
 
         .mirror-content {
             position: absolute;
-            inset: 0;
             width: 25vw;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 1.2vw;
+            gap: 1.5vw;
+            
         }
 
-        .mirror-clock {
-            border: 1px solid rgb(0, 0, 0);
-            height: 25%;
-        }
 
         .mirror-data {
-            border: 1px solid rgb(0, 0, 0);
             height: 100%;
-        }
-
-        .mirror-clima {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 25vw;
-            height: 300px;
-            border: 1px solid rgb(0, 0, 0);
-            justify-content: center;
+            width: 300px;
+            
+            background-color: #1d1c1f;
         }
 
         #hidratacion {
-            color: azure
+            color: azure;
+        }
+        h2{
+            margin-top: 20px;
+            padding-left: 3.8vh;
+            color: white;
         }
     </style>
 
     <body>
         <div class="mirror">
             <div class="mirror-content">
-                <div class="mirror-clock">
-
-                </div>
                 <div class="mirror-data">
-                    <p>Hidratacion: <span id="hidratacion"></span></p>
-                    <p>Peso: <span id="peso"></span></p>
-                    <p>Edad: <span id="edad"></span></p>
-                    <p>Sueño: <span id="sueno"></span></p>
+                    <h2>Datos del usuario</h2>
+                    <p><i class="bi bi-droplet-fill"></i> Hidratacion: <span id="hidratacion"> Litros</span></p>
+                    <p><i class="bi bi-box-seam-fill"></i> Peso: <span id="peso"></span> Kilogramos</p>
+                    <p><i class="bi bi-calendar4-week"></i> Edad: <span id="edad"></span> Años</p>
+                    <p><i class="bi bi-battery"></i> Sueño: <span id="sueno"></span> Horas</p>
                 </div>
-            </div>
-            <div class="mirror-clima">
-
-
             </div>
         </div>
 
@@ -86,7 +84,7 @@
                     getMirrorData("ABCD1234")
                     console.log(userLogged)
                     userLogged === 0 ? false : getUserDataAsync(userLogged)
-                }, 10)
+                }, 10000)
             }
 
             function stopInterval() {
@@ -101,7 +99,7 @@
             setTimeout(stopInterval, 10000)
 
             function getMirrorData(code) {
-                fetch("http://www.espejointeligente.somee.com/api/users/mirror/" + code, {
+                fetch("https://EspejoInteligente.bsite.net/api/users/mirror/" + code, {
                     method: "GET",
                     headers: {
                         "ContentType": "application/json"
@@ -118,7 +116,7 @@
 
             function getUserData(code) {
                 return new Promise((resolve, reject) => {
-                    fetch("http://www.espejointeligente.somee.com/api/users/salud?id_user=" + code, {
+                    fetch("https://EspejoInteligente.bsite.net/api/users/salud?id_user=" + code, {
                         method: "GET",
                         headers: {
                             "ContentType": "application/json"
